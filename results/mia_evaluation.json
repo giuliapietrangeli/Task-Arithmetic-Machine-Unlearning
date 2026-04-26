@@ -1,0 +1,14 @@
+{
+    "ResNet18": {
+        "MIA_AUC_Base": 0.41070400000000007,
+        "MIA_AUC_Unlearned": 0.429735
+    },
+    "VGG11_bn": {
+        "MIA_AUC_Base": 0.4717827,
+        "MIA_AUC_Unlearned": 0.4374386
+    },
+    "MobileNetV2": {
+        "MIA_AUC_Base": 0.452458,
+        "MIA_AUC_Unlearned": 0.4744106
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "ResNet18": {
+        "Gradient_Ascent": {
+            "retain": 46.90000116825104,
+            "forget": 2.800000086426735
+        },
+        "Random_Labeling": {
+            "retain": 84.91111397743225,
+            "forget": 15.899999439716339
+        }
+    },
+    "VGG11_bn": {
+        "Gradient_Ascent": {
+            "retain": 11.133333295583725,
+            "forget": 0.0
+        },
+        "Random_Labeling": {
+            "retain": 47.955554723739624,
+            "forget": 0.0
+        }
+    },
+    "MobileNetV2": {
+        "Gradient_Ascent": {
+            "retain": 49.59999918937683,
+            "forget": 4.399999976158142
+        },
+        "Random_Labeling": {
+            "retain": 59.26666855812073,
+            "forget": 9.600000083446503
+        }
+    }
+}

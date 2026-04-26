@@ -1,0 +1,17 @@
+{
+    "ResNet18": {
+        "Acc_Airplane": 50.5,
+        "Acc_Others": 63.8,
+        "Gap": 13.299999999999997
+    },
+    "VGG11_bn": {
+        "Acc_Airplane": 82.5,
+        "Acc_Others": 85.925,
+        "Gap": 3.424999999999997
+    },
+    "MobileNetV2": {
+        "Acc_Airplane": 49.2,
+        "Acc_Others": 58.0875,
+        "Gap": 8.887499999999996
+    }
+}

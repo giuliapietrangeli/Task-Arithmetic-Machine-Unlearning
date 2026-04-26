@@ -1,0 +1,23 @@
+{
+    "ResNet18": {
+        "alpha": -1.0,
+        "drop": 0.6289473684210526,
+        "retain": 62.31111288070679,
+        "forget": 2.9999999329447746,
+        "status": "BEST_EFFORT"
+    },
+    "VGG11_bn": {
+        "alpha": -2.0,
+        "drop": 0.99,
+        "retain": 86.32222414016724,
+        "forget": 1.0999999940395355,
+        "status": "PASSED"
+    },
+    "MobileNetV2": {
+        "alpha": -1.5,
+        "drop": 0.5,
+        "retain": 57.099997997283936,
+        "forget": 0.10000000474974513,
+        "status": "BEST_EFFORT"
+    }
+}

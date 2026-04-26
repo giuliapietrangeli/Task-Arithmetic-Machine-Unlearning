@@ -1,0 +1,7 @@
+{
+    "VGG11_bn": {
+        "Task_Arithmetic_Time_sec": 2.2845,
+        "Retraining_Time_sec": 3236.35,
+        "Computational_Savings_Percent": 99.9294
+    }
+}
