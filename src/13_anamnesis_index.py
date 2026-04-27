@@ -69,7 +69,7 @@ def relearn(model, train_loader, test_loader, device, target_class, max_epochs=1
         print(f"[Epoch {epoch}] Accuracy: {acc:.2f}%")
         
         if acc >= target_acc:
-            print(f"Target {target_acc}% reached in {epoch} epochs")
+            print(f"Target {target_acc:.2f}% reached in {epoch} epochs")
             return epoch, history
             
     print(f"Target not reached after {max_epochs} epochs")
@@ -81,8 +81,8 @@ def main():
     print(f" Starting Anamnesis Index evaluation on {device}")
 
     FORGET_CLASS = 8 # Ship
-    TARGET_ACC = 80.0
-    MAX_EPOCHS = 15 # meno?
+    ALPHA_MARGIN = 5.0 # Margine di tolleranza 
+    MAX_EPOCHS = 30 # max training epochs
     
     loaders, class_names = get_cifar10_dataloaders(batch_size=128, forget_class=FORGET_CLASS)
 
@@ -121,7 +121,7 @@ def main():
 
     for config in configs:
         arch_name = config['name']
-        print(f"Relearning: {arch_name}")
+        print(f"\n{'='*50}\nRelearning: {arch_name}\n{'='*50}")
 
         if not all(os.path.exists(f) for f in [config['base'], config['expert'], config['comparison']]):
             print(f"Missing weights for {arch_name}. Skipping.")
@@ -130,6 +130,11 @@ def main():
         base_model = config['class']().to(device)
         base_model.load_state_dict(torch.load(config['base'], map_location=device))
         
+        orig_acc = evaluate_single_class(base_model, loaders['test_all'], device, FORGET_CLASS)
+        dynamic_target_acc = orig_acc - ALPHA_MARGIN
+        print(f"Original Model Accuracy on Class {FORGET_CLASS}: {orig_acc:.2f}%")
+        print(f"Dynamic Target Accuracy (Alpha={ALPHA_MARGIN}%): {dynamic_target_acc:.2f}%")
+
         expert_model = config['class']().to(device)
         expert_model.load_state_dict(torch.load(config['expert'], map_location=device))
 
@@ -141,26 +146,29 @@ def main():
         comparison_model = config['class']().to(device)
         comparison_model.load_state_dict(torch.load(config['comparison'], map_location=device))
 
-        print(f"1: Comparison Model (Native Ignorance)")
+        print(f"\n--- 1: Comparison Model (Native Ignorance) ---")
         epochs_comparison, hist_comp = relearn(
             comparison_model, loaders['base_train'], loaders['test_all'], 
-            device, FORGET_CLASS, MAX_EPOCHS, TARGET_ACC
+            device, FORGET_CLASS, MAX_EPOCHS, dynamic_target_acc
         ) 
 
-        print(f"2: Unlearned Model (Surgical Ignorance)")
+        print(f"\n--- 2: Unlearned Model (Surgical Ignorance) ---")
         epochs_unlearned, hist_unl = relearn(
             unlearned_model, loaders['base_train'], loaders['test_all'], 
-            device, FORGET_CLASS, MAX_EPOCHS, TARGET_ACC
+            device, FORGET_CLASS, MAX_EPOCHS, dynamic_target_acc
         )
 
-        if epochs_comparison == 0: epochs_comparison = 1 #Evita la divisione per zero
-        ain = epochs_unlearned / epochs_comparison # ideal is 1
-        print(f"{arch_name} Results:")
+        if epochs_comparison == 0: epochs_comparison = 1 #per la divisione per zero
+        ain = epochs_unlearned / epochs_comparison
+        
+        print(f"\n{arch_name} FINAL RESULTS:")
         print(f"Relearn Time (Comparison): {epochs_comparison} epochs")
         print(f"Relearn Time (Unlearned): {epochs_unlearned} epochs")
         print(f"Anamnesis Index (AIN): {ain:.2f}")
 
         results[arch_name] = {
+            "Original_Accuracy": orig_acc,
+            "Target_Accuracy": dynamic_target_acc,
             "Relearn_Comparison": epochs_comparison,
             "Relearn_Unlearned": epochs_unlearned,
             "AIN": ain,
