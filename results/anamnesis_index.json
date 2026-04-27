@@ -1,8 +1,10 @@
 {
     "ResNet18": {
-        "Relearn_Comparison": 11,
-        "Relearn_Unlearned": 8,
-        "AIN": 0.7272727272727273,
+        "Original_Accuracy": 95.0,
+        "Target_Accuracy": 90.0,
+        "Relearn_Comparison": 12,
+        "Relearn_Unlearned": 9,
+        "AIN": 0.75,
         "History_Comparison": [
             0.0,
             0.0,
@@ -12,27 +14,31 @@
             0.0,
             0.0,
             0.0,
-            5.3,
-            39.9,
-            70.5,
-            84.0
+            4.3,
+            45.0,
+            71.2,
+            85.3,
+            92.3
         ],
         "History_Unlearned": [
             3.0,
-            10.9,
-            15.9,
-            23.1,
-            31.7,
-            42.7,
-            55.4,
-            71.6,
-            83.9
+            11.1,
+            15.7,
+            17.1,
+            28.6,
+            43.3,
+            54.0,
+            72.6,
+            84.3,
+            90.9
         ]
     },
     "VGG11_bn": {
-        "Relearn_Comparison": 10,
+        "Original_Accuracy": 93.5,
+        "Target_Accuracy": 88.5,
+        "Relearn_Comparison": 11,
         "Relearn_Unlearned": 4,
-        "AIN": 0.4,
+        "AIN": 0.36363636363636365,
         "History_Comparison": [
             0.0,
             0.0,
@@ -43,21 +49,24 @@
             0.0,
             0.0,
             0.0,
-            33.3,
+            0.0,
+            83.4,
             100.0
         ],
         "History_Unlearned": [
             0.0,
-            3.3,
-            32.5,
-            54.4,
-            85.7
+            3.7,
+            28.0,
+            55.4,
+            88.6
         ]
     },
     "MobileNetV2": {
-        "Relearn_Comparison": 15,
-        "Relearn_Unlearned": 15,
-        "AIN": 1.0,
+        "Original_Accuracy": 87.2,
+        "Target_Accuracy": 82.2,
+        "Relearn_Comparison": 30,
+        "Relearn_Unlearned": 16,
+        "AIN": 0.5333333333333333,
         "History_Comparison": [
             0.0,
             0.0,
@@ -74,25 +83,41 @@
             0.0,
             0.0,
             0.0,
-            0.0
+            0.0,
+            1.4,
+            3.3,
+            3.3,
+            4.2,
+            3.1,
+            1.3,
+            2.6,
+            2.6,
+            4.3,
+            1.7,
+            2.3,
+            2.3,
+            16.7,
+            62.9,
+            88.5
         ],
         "History_Unlearned": [
             0.1,
-            1.9,
-            6.0,
-            10.1,
-            13.4,
-            14.8,
-            14.6,
-            17.3,
-            18.6,
-            23.8,
+            2.2,
+            4.5,
+            6.1,
+            11.0,
+            12.6,
+            14.4,
+            17.4,
+            18.4,
+            20.1,
+            21.1,
             23.2,
-            26.9,
-            38.0,
-            45.9,
-            61.7,
-            82.7
+            36.7,
+            46.1,
+            58.1,
+            80.9,
+            94.9
         ]
     }
 }
