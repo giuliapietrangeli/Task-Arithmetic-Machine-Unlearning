@@ -1,7 +1,9 @@
 {
     "VGG11_bn": {
-        "Task_Arithmetic_Time_sec": 2.2845,
-        "Retraining_Time_sec": 3236.35,
-        "Computational_Savings_Percent": 99.9294
+        "Expert_Finetuning_Time_sec": 378.97524785995483,
+        "Vector_Subtraction_Time_sec": 2.389456033706665,
+        "Total_Unlearning_Time_sec": 381.3647038936615,
+        "Retraining_Time_sec": 3251.2926239967346,
+        "Computational_Savings_Percent": 88.2703666511303
     }
 }
