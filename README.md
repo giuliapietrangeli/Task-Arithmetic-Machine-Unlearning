@@ -25,7 +25,6 @@ The codebase is designed as a modular, sequential pipeline. Execution order is e
 
 ```text
 .
-├── Machine_Unlearning___DLAI.pdf      # The academic paper
 ├── LICENSE                            # Project license
 ├── requirements.txt                   # Python dependencies
 ├── README.md                          # You are here
@@ -132,6 +131,5 @@ Where:
 *   $\tau = \theta_{ft} - \theta_{pre}$ is the Task Vector (Difference between Expert and Base).
 *   $\alpha$ is the scaling factor (negative for ablation).
 *   $\rho$ is the drop-percentile for magnitude-based pruning to isolate highly semantic weights.
-*   *Crucial Detail:* Batch Normalization running statistics (`running_mean`, `running_var`) are explicitly excluded from the algebraic manipulation to prevent model collapse.
 
 ---
