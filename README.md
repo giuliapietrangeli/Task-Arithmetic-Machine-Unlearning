@@ -2,7 +2,6 @@
 
 [![Python 3.12](https://img.shields.io/badge/Python-3.12-blue.svg)](https://www.python.org/downloads/release/python-3120/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.x-ee4c2c.svg)](https://pytorch.org/)
-[![License](https://img.shields.io/badge/License-Academic-green.svg)](./LICENSE)
 
 **Authors:** Giulia Pietrangeli, Lorenzo Musso  
 **Course:** Deep Learning and Applied AI (2025/2026)  
