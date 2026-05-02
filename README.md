@@ -8,15 +8,9 @@
 **Course:** Deep Learning and Applied AI (2025/2026)  
 **Institution:** Sapienza University of Rome  
 
-This repository contains the official implementation and experimental pipeline for the paper *"Task Arithmetic for Efficient Machine Unlearning: A Study on CNN Dynamics"*. The project explores the efficacy of Task Arithmetic for selective class unlearning in Convolutional Neural Networks (CNNs), exposing critical topological vulnerabilities and the illusion of permanent amnesia.
-
-## 📄 Paper & Abstract
-
-**[Download the Full Paper (PDF)](./Machine_Unlearning___DLAI.pdf)**
-
 > **Abstract:** This work evaluates Task Arithmetic for single-class unlearning across VGG-11, ResNet-18, and MobileNetV2. While state-of-the-art metrics (ZRF, KL Divergence, MIA) validate apparent knowledge erasure, we expose critical post-ablation topological vulnerabilities: Semantic Shift and Over-forgetting. Finally, the Anamnesis Index (AIN) quantifies latent residual traces and the resulting “Rebound Effect,” revealing that true permanent amnesia remains an illusion.
 
-## 🔑 Key Findings
+## Key Findings
 
 *   **Topology-Bound Efficacy:** Sequential architectures (VGG-11) allow for precise surgical ablation, while residual (ResNet-18) and bottleneck (MobileNetV2) topologies resist erasure, inducing "Fake Unlearning".
 *   **Semantic Shift:** Unlearning does not result in random noise, but in deterministic prediction re-routing (e.g., suppressed "Ship" features reroute to "Cat" in ResNet-18 due to skip connections).
@@ -25,7 +19,7 @@ This repository contains the official implementation and experimental pipeline f
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 
 The codebase is designed as a modular, sequential pipeline. Execution order is enforced by script numbering (`01` to `15`).
 
