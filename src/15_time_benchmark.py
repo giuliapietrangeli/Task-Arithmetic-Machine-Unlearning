@@ -11,8 +11,32 @@ from unlearning.dataset import get_cifar10_dataloaders
 from unlearning.surgeon import TaskArithmeticSurgeon
 from unlearning.utils import seed_everything
 
+def fine_tune_expert(model, dataloader, device, epochs, target_class):
+    model.train()
+    criterion = nn.CrossEntropyLoss()
+    optimizer = optim.AdamW(model.parameters(), lr=1e-4, weight_decay=1e-4)
+    
+    start_time = time.time()
+    
+    for epoch in range(1, epochs + 1):
+        for inputs, labels in tqdm(dataloader, desc=f"Expert Tuning (Epoch {epoch}/{epochs})", leave=False):
+            inputs, labels = inputs.to(device), labels.to(device)
+            
+            mask = (labels == target_class)
+            if mask.sum() == 0:
+                continue
+            inputs, labels = inputs[mask], labels[mask]
+            
+            optimizer.zero_grad()
+            outputs = model(inputs)
+            loss = criterion(outputs, labels)
+            loss.backward()
+            optimizer.step()
+            
+    end_time = time.time()
+    return end_time - start_time
+
 def execute_full_retraining(model, dataloader, device, epochs, target_class):
-    # retrain model from scratch
     model.train()
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.AdamW(model.parameters(), lr=1e-3, weight_decay=1e-4)
@@ -44,34 +68,44 @@ def main():
 
     FORGET_CLASS = 8 
     EPOCHS_ORIGINALI = 30 
+    EXPERT_EPOCHS = 5 
     
     loaders, class_names = get_cifar10_dataloaders(batch_size=128, forget_class=FORGET_CLASS)
 
-    base_model = VGG11_CIFAR10().to(device) # solo vgg - il più lento
+    base_model = VGG11_CIFAR10().to(device) 
     expert_model = VGG11_CIFAR10().to(device)
     retrain_model = VGG11_CIFAR10().to(device)
     
-    print("Phase 1: Task Arithmetic Measurement")
+    print(f"Phase 1a: Expert Model Fine-Tuning ({EXPERT_EPOCHS} Epochs on Class {FORGET_CLASS})")
+    time_expert = fine_tune_expert(expert_model, loaders['base_train'], device, EXPERT_EPOCHS, FORGET_CLASS)
+    print(f"Expert tuning completed in {time_expert:.2f} seconds.")
+
+    print("Phase 1b: Task Arithmetic Vector Subtraction (O(1) operation)")
     start_ta = time.time()
     unlearned_model = TaskArithmeticSurgeon.unlearn(base_model, expert_model, alpha=-2.5, drop_percentile=0.990)
     end_ta = time.time()
     time_ta = end_ta - start_ta
-    print(f"Operation completed in {time_ta:.4f} seconds.")
+    print(f"Vector subtraction completed in {time_ta:.4f} seconds.")
 
     print(f"Phase 2: Full Retraining Execution ({EPOCHS_ORIGINALI} Epochs)")
     time_retrain_total = execute_full_retraining(retrain_model, loaders['base_train'], device, EPOCHS_ORIGINALI, FORGET_CLASS)
     print(f"Retraining completed in {time_retrain_total:.2f} seconds.")
     
-    savings = (1.0 - (time_ta / time_retrain_total)) * 100
+    total_unlearning_time = time_expert + time_ta
+    savings = (1.0 - (total_unlearning_time / time_retrain_total)) * 100
     
-    print("Real Time Results")
-    print(f"Task Arithmetic Time: {time_ta:.4f} sec")
-    print(f"Retraining Time (30e): {time_retrain_total:.2f} sec")
-    print(f"Computational Savings:{savings:.4f}%")
+    print("\n--- Real Time Results ---")
+    print(f"Expert Fine-Tuning Time: {time_expert:.2f} sec")
+    print(f"Vector Subtraction Time: {time_ta:.4f} sec")
+    print(f"Total Unlearning Time:   {total_unlearning_time:.2f} sec")
+    print(f"Retraining Time (30e):   {time_retrain_total:.2f} sec")
+    print(f"Computational Savings:   {savings:.4f}%")
 
     results = {
         "VGG11_bn": {
-            "Task_Arithmetic_Time_sec": time_ta,
+            "Expert_Finetuning_Time_sec": time_expert,
+            "Vector_Subtraction_Time_sec": time_ta,
+            "Total_Unlearning_Time_sec": total_unlearning_time,
             "Retraining_Time_sec": time_retrain_total,
             "Computational_Savings_Percent": savings
         }

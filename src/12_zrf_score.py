@@ -35,7 +35,6 @@ def calculate_zrf_score(unlearned_model, incompetent_model, dataloader, device, 
             
             m_probs = 0.5 * (p_probs + q_probs)
             
-            # CORREZIONE: input = log(M), target = P (o Q)
             kl_p_m = F.kl_div(torch.log(m_probs + 1e-8), p_probs, reduction='batchmean')
             kl_q_m = F.kl_div(torch.log(m_probs + 1e-8), q_probs, reduction='batchmean')
             
@@ -48,7 +47,6 @@ def calculate_zrf_score(unlearned_model, incompetent_model, dataloader, device, 
             
     avg_js = total_js / samples if samples > 0 else 0
     
-    # ZRF = 1 significa distribuzioni identiche, ZRF = 0 significa totalmente diverse
     zrf_score = 1.0 - avg_js
     return zrf_score
 
